@@ -59,9 +59,11 @@ function validateForm(name, Email, ID, Contact) {
         alert("Invalid Student ID");
         return false;
     }
-    let studentdataarray = JSON.parse(localStorage.getItem("studentDataArray"))
 
-    let similarID = studentdataarray.find(elem => elem.ID == ID);
+    let studentDataArray = JSON.parse(localStorage.getItem('studentDataArray')) || [];
+
+    let similarID = studentDataArray.find(elem => elem.ID == ID);
+
     if (similarID) {
         alert('ID must be unique')
         return false;
