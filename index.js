@@ -10,6 +10,10 @@ function handleFormSubmit(event) {
 
     // localStorage.clear()
 
+    if (!validateForm(name, Email, ID, Contact)) {
+        return;
+    }
+
     const newStudent =
     {
         name: name,
@@ -29,11 +33,46 @@ function handleFormSubmit(event) {
     document.getElementById('Email').value = '';
     document.getElementById('ID').value = '';
     document.getElementById('Contact').value = '';
-
+    alert("New Student Registered ");
     UpdateTable();
 }
 window.onload = UpdateTable;
 
+// -----------------------Proper validation-------------------------
+
+function validateForm(name, Email, ID, Contact) {
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    const idPattern = /^\d+$/;
+    const contactPattern = /^\d{10}$/;
+
+    if (!name) {
+        alert("Name is required");
+        return false;
+    }
+
+    if (!emailPattern.test(Email)) {
+        alert("Invalid Email ID");
+        return false;
+    }
+
+    if (!idPattern.test(ID)) {
+        alert("Invalid Student ID");
+        return false;
+    }
+    let studentdataarray = JSON.parse(localStorage.getItem("studentDataArray"))
+
+    let similarID = studentdataarray.find(elem => elem.ID == ID);
+    if (similarID) {
+        alert('ID must be unique')
+        return false;
+    }
+    if (!contactPattern.test(Contact)) {
+        alert("Invalid Contact Number");
+        return false;
+    }
+
+    return true;
+}
 // <!-- --------------------------------------Updating Value in table -------------------------------------------- -->
 
 function UpdateTable() {
@@ -58,10 +97,11 @@ function UpdateTable() {
 
         });
     }
-    gsap.from('td', {
-        duration: 1,
+    gsap.from('tr', {
+        duration: .5,
         opacity: 0,
-        stagger: 0.3
+        delay: 1,
+        stagger: .5
     })
 }
 
